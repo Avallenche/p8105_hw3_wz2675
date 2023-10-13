@@ -171,12 +171,24 @@ nhanes_data |>
   ggplot(aes(x = age, y = total_mims, color = sex)) +
   geom_point() +
   geom_smooth(se = FALSE) +
-  facet_grid(~education)
+  facet_grid(~education) +
+  labs(title = "Different sex total activities in different education level") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
 In this part, we make a scatter plot with smooth trend line that represent the aggregated value of each minute activity versus the year. In this graph we separate the category of each gender and three different education level. From the graph, we see that high school equivalent males and females have a higher activity around the age of 40 with females higher than males. And there is the same condition for people in less than high school category in their 60s with males greater than females. For more than high school, the trend is somehow flat and uniform.
 
 ```{r}
-
+nhanes_data |> 
+  pivot_longer(cols = starts_with("min"),
+               names_to = "mins",
+               values_to = "min_data") |> 
+  ggplot(aes(x = mins, y = min_data)) +
+  geom_point(aes(color = sex, alpha = .5)) +
+  geom_smooth(se = FALSE) +
+  facet_grid(~education) +
+  labs(title = "Daily activity of different gender in different education level") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
+In this question, we are looking for a pattern of people's daily activity spreaded into minutes. From the graph we made, we noticed that both males and females experiences a "gap" period in the middle of the day. For males have a education level of more than high school, they have a higher activity level in the morning and early evening compared with females.
